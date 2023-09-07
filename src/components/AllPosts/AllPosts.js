@@ -3,6 +3,8 @@ import { getAllPosts } from "../../services/AllPostsService";
 import { getallTopics } from "../../services/TopicService";
 import { getUserLikes } from "../../services/UserLikesService";
 import "./AllPosts.css";
+import { AllPostsSearch } from "./AllPostsSearch";
+import { AllPostsFilter } from "./AllPostsFilter";
 
 export const AllPosts = () => {
   const [allPosts, setAllPosts] = useState([]);
@@ -42,21 +44,16 @@ export const AllPosts = () => {
   return (
     <>
       <div className="posts-filter-search">
-        <input
-          className="posts-search"
-          type="text"
-          placeholder="Search posts"
-          value={searchTerm}
-          onChange={handleSearchChange}
+        <AllPostsSearch
+          searchTerm={searchTerm}
+          handleSearchChange={handleSearchChange}
         />
-        <select className="posts-filter" onChange={handleTopicChange}>
-          <option>All Topics</option>
-          {allTopics.map((topic) => (
-            <option key={topic.id} value={topic.id}>
-              {topic.name}
-            </option>
-          ))}
-        </select>
+        <div className="posts-filter">
+          <AllPostsFilter
+            handleTopicChange={handleTopicChange}
+            allTopics={allTopics}
+          />
+        </div>
       </div>
       {filteredPosts.map((post) => {
         const topic = allTopics.find((t) => t.id === post.topicId);
